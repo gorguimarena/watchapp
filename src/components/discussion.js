@@ -8,13 +8,43 @@ import {
   selectedUserId,
   setSelectedConversationId,
   renderContactsList,
-  getDiscussionContacts
+  getDiscussionContacts,
+  users,
 } from "../DATA/Const";
 import {
   deleteConversation,
   deleteDiscussion,
   blocConversation,
 } from "./actions";
+
+export function setAvatarUser(avatar) {
+  ElAvatar.textContent = avatar;
+}
+export function setNameUser(name) {
+  ElName.textContent = name;
+}
+export function setLastMessageUser(message) {
+  ElMessage.textContent = message;
+}
+
+const ElAvatar = createElement("div", {
+  class: [
+    "rounded-full",
+    "bg-blue-500",
+    "w-16",
+    "h-16",
+    "flex",
+    "justify-center",
+    "items-center",
+  ],
+});
+
+const ElName = createElement("span", {
+  class: ["text-lg", "font-semibold", "text-black"],
+});
+const ElMessage = createElement("span", {
+  class: ["text-sm", "text-gray-600"],
+});
 
 export const discussionChamp = createElement("div", {
   id: "discussion-champ",
@@ -126,9 +156,18 @@ export const discussion = createElement(
         createElement(
           "div",
           {
-            class: ["rounded-full", "bg-blue-500", "w-16", "h-16"],
+            class: ["flex", "justify-center", "items-center"],
           },
-          ""
+          [
+            ElAvatar,
+            createElement(
+              "div",
+              {
+                class: ["flex", "flex-col", "gap-1", "ml-2"],
+              },
+              [ElName, ElMessage]
+            ),
+          ]
         ),
         createElement(
           "div",
@@ -178,7 +217,6 @@ export const discussion = createElement(
   ]
 );
 
-
 export function broadcastMessage(senderId, content) {
   if (!content.trim()) return;
 
@@ -218,5 +256,5 @@ export function broadcastMessage(senderId, content) {
   });
 
   localStorage.setItem("conversations", JSON.stringify(conversations));
-  alert("Message diffusé à tous les utilisateurs !");
+  renderContactsList(getDiscussionContacts(idUser), false, false);
 }

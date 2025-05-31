@@ -1,4 +1,11 @@
-import { users, conversations, setUserId, groups } from "../DATA/Const";
+import {
+  users,
+  setUserId,
+  groups,
+  renderContactsList,
+  getDiscussionContacts,
+  idUser
+} from "../DATA/Const";
 import { contactEr } from "./Errors";
 import { memberSpace } from "../main";
 import { connexionChamps } from "./form";
@@ -25,6 +32,7 @@ export function verifierContact(contact) {
   const user = users.find((user) => user.contact === contact);
   if (user) {
     connecterUtilisateur(user.id);
+    renderContactsList(getDiscussionContacts(idUser), false, false);
   } else {
     contactEr.textContent = "Un compte avec ce numéro n'existe pas.";
     contactEr.style.display = "block";
@@ -38,6 +46,6 @@ function connecterUtilisateur(id) {
 }
 
 function showMemberSpace() {
-  memberSpace.style.display = 'flex';
-  connexionChamps.style.display = 'none';
+  memberSpace.style.display = "flex";
+  connexionChamps.style.display = "none";
 }

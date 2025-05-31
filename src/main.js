@@ -6,14 +6,14 @@ import { discussion } from "./components/discussion.js";
 import { newContact, createGroupForm } from "./components/form.js";
 import { connexionChamps } from "./components/form.js";
 import { listMembers } from "./DATA/Const.js";
-
+import { diffusionChamps } from "./components/form.js";
 export const memberSpace = createElement(
   "div",
   {
     class: ["bg-red-500", "h-screen", "flex", "gap-0", "z-20"],
     vShow: false,
   },
-  [newContact, sideBar, main, discussion, createGroupForm]
+  [newContact, sideBar, main, discussion, createGroupForm, diffusionChamps]
 );
 
 const app = createElement(

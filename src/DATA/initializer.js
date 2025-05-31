@@ -1,4 +1,4 @@
-import {  conversations } from "./Const";
+import { conversations } from "./Const";
 
 const baseUsers = [
   { id: 1, name: "Alice", contact: "7816535561" },

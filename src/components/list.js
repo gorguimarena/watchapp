@@ -13,7 +13,7 @@ export function showSearchFromUsers(query) {
 
   if (query.length === 1 && query === "#") {
     results = users
-      .filter((user) => user.id !== idUser) 
+      .filter((user) => user.id !== idUser)
       .map((user) => {
         const conv = conversations.find(
           (c) =>

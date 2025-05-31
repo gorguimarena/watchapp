@@ -2,14 +2,14 @@ import {
   newContact,
   createGroupForm,
   populateGroupMembers,
-  diffusionChamps
+  diffusionChamps,
 } from "../components/form";
 import { discussionContactsContainer } from "../components/main-disc";
 import { createElement } from "../components/components";
 import { loadDiscussionWith } from "../components/main-disc";
 import { showAddMembersForm } from "../components/form";
 import { initializeData } from "./initializer";
-
+import { setAvatarUser, setLastMessageUser, setNameUser } from "../components/discussion";
 
 export let selectedUserId = null;
 export let idUser = JSON.parse(localStorage.getItem("idUser")) || null;
@@ -18,6 +18,17 @@ export let groups = JSON.parse(localStorage.getItem("groups")) || [];
 export let conversations =
   JSON.parse(localStorage.getItem("conversations")) || [];
 export let selectedConversationId = null;
+export function getAvatarUser(){
+  return avatarUser;
+}
+
+export function getLastMessageUser(){
+  return lastMessageUser;
+}
+export function getNameUser(){
+  return nameUser;
+}
+
 
 export function setUserId(newId) {
   idUser = newId;
@@ -68,7 +79,7 @@ export const infoOptions = [
   {
     icon: "bi bi-arrow-bar-left",
     text: "Deconnexion",
-  }
+  },
 ];
 
 export const infoActions = [
@@ -117,7 +128,7 @@ export const optionHandlers = {
   Deconnexion: () => {
     idUser = null;
     location.reload();
-  }
+  },
 };
 
 export function renderContactsList(
@@ -183,6 +194,9 @@ export function renderContactsList(
         onClick: () => {
           selectedConversationId = item.conversationId;
           selectedUserId = item.id;
+          setAvatarUser(avatar);
+          setNameUser(item.name);
+          setLastMessageUser(item.lastMessage);
           loadDiscussionWith(item.conversationId, idUser);
           renderContactsList(list, withGroupButton, item.id, showArchived);
         },
@@ -370,10 +384,7 @@ export function getGroupDiscussions(currentUserId = 1) {
 export function getDiscussionContacts(idUser = 1) {
   const discussionIds = conversations
     .filter(
-      (c) =>
-        !c.isGroup &&
-        c.participants.includes(idUser) &&
-        !c.isArchived
+      (c) => !c.isGroup && c.participants.includes(idUser) && !c.isArchived
     )
     .map((c) => {
       const otherId = c.participants.find((id) => id !== idUser);
@@ -396,9 +407,8 @@ export function getDiscussionContacts(idUser = 1) {
         date: lastMsg ? lastMsg.timestamp?.slice(11, 16) : "",
       };
     })
-    .filter(Boolean); 
+    .filter(Boolean);
 }
-
 
 export function getArchivedDiscussions(currentUserId = 1) {
   return conversations

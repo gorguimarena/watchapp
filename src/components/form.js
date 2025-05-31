@@ -7,6 +7,7 @@ import {
   generateUniqueName,
   verifierContact
 } from "./validators";
+import { broadcastMessage } from "./discussion";
 
 const inputName = createElement("input", {
   type: "text",
@@ -469,28 +470,24 @@ export const connexionChamps = createElement(
 );
 
 
-
-
-const diffusiontInput = createElement(
-  'input',
+const diffusionInput = createElement(
+  'textarea',
   {
     class: [
       'border', 'rounded', 'p-2', 'w-96', 'outline-none',
-      'focus:ring-2', 'focus:ring-blue-400'
+      'focus:ring-2', 'focus:ring-blue-400', 'resize-none', 'h-32'
     ],
-    type: 'text',
-    name: 'contact',
-    placeholder: 'Numéro de téléphone'
+    name: 'diffusion',
+    placeholder: 'Message à diffuser'
   }
 );
 
-const diffusiontEr = createElement(
+const diffusionError = createElement(
   'p',
   {
     class: ['text-red-500', 'text-xs', 'mt-1'],
     style: { display: 'none' },
-  },
-  'Veuillez entrer un numéro de téléphone valide.'
+  }
 );
 
 const sendButton = createElement(
@@ -502,7 +499,24 @@ const sendButton = createElement(
       'hover:bg-blue-600', 'w-96', 'mt-2'
     ]
   },
-  'Connexion'
+  'Envoyer'
+);
+
+const cancelButton = createElement(
+  'button',
+  {
+    type: 'button',
+    class: [
+      'bg-red-500', 'text-white', 'p-2', 'rounded', 'font-bold',
+      'hover:bg-red-600', 'w-96', 'mt-1'
+    ],
+    onclick: () => {
+      diffusionChamps.style.display = 'none';
+      diffusionInput.value = '';
+      diffusionError.style.display = 'none';
+    }
+  },
+  'Annuler'
 );
 
 export const formDiffusion = createElement(
@@ -511,31 +525,40 @@ export const formDiffusion = createElement(
     class: [
       'p-12', 'absolute', 'top-0', 'left-0', 'h-screen', 'w-full',
       'bg-black', 'z-50', 'flex', 'flex-col', 'gap-2', 'items-center',
-      'justify-center', 'opacity-80'
+      'justify-center', 'bg-opacity-80'
     ],
     onsubmit: (e) => {
       e.preventDefault();
-      const contact = diffusiontInput.value.trim();
-      if (!contact) {
-        contactEr.textContent = 'Veuillez entrer un numéro de téléphone .';
-        contactEr.style.display = 'block';
+      const content = diffusionInput.value.trim();
+
+      if (!content) {
+        diffusionError.textContent = 'Veuillez entrer le message à diffuser.';
+        diffusionError.style.display = 'block';
         return;
       }
-      
+
+      broadcastMessage(idUser, content);
+      diffusionChamps.style.display = 'none';
+      diffusionInput.value = '';
+      diffusionError.style.display = 'none';
     }
   },
   [
-    diffusiontInput,
-    diffusiontEr,
-    sendButton
+    createElement("h2", {
+      class: ["text-white", "text-xl", "font-bold", "mb-4"]
+    }, "Diffusion de message"),
+    diffusionInput,
+    diffusionError,
+    sendButton,
+    cancelButton
   ]
 );
 
 export const diffusionChamps = createElement(
   "div",
   {
-    class: ["bg-blue-100", "h-screen", "flex", "gap-0", "z-20", "opacity-80"],
-    vShow: true,
+    class: ["fixed", "inset-0", "z-50", "flex", "items-center", "justify-center", "bg-black", "bg-opacity-50"],
+    vShow: false,
   },
   [
     formDiffusion
