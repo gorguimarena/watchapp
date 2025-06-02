@@ -130,3 +130,4 @@ export function initializeData() {
     localStorage.setItem("conversations", JSON.stringify(conversations));
   }
 }
+
