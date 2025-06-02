@@ -9,7 +9,11 @@ import { createElement } from "../components/components";
 import { loadDiscussionWith } from "../components/main-disc";
 import { showAddMembersForm } from "../components/form";
 import { initializeData } from "./initializer";
-import { setAvatarUser, setLastMessageUser, setNameUser } from "../components/discussion";
+import {
+  setAvatarUser,
+  setLastMessageUser,
+  setNameUser,
+} from "../components/discussion";
 
 export let selectedUserId = null;
 export let idUser = JSON.parse(localStorage.getItem("idUser")) || null;
@@ -18,17 +22,16 @@ export let groups = JSON.parse(localStorage.getItem("groups")) || [];
 export let conversations =
   JSON.parse(localStorage.getItem("conversations")) || [];
 export let selectedConversationId = null;
-export function getAvatarUser(){
+export function getAvatarUser() {
   return avatarUser;
 }
 
-export function getLastMessageUser(){
+export function getLastMessageUser() {
   return lastMessageUser;
 }
-export function getNameUser(){
+export function getNameUser() {
   return nameUser;
 }
-
 
 export function setUserId(newId) {
   idUser = newId;
@@ -196,7 +199,11 @@ export function renderContactsList(
           selectedUserId = item.id;
           setAvatarUser(avatar);
           setNameUser(item.name);
-          setLastMessageUser(item.lastMessage);
+          setLastMessageUser(
+            commencePar(item.lastMessage, "blob:http://localhost:") || commencePar(item.lastMessage, 'data:audio/webm;base64')
+              ? "Audio"
+              : item.lastMessage
+          );
           loadDiscussionWith(item.conversationId, idUser);
           renderContactsList(list, withGroupButton, item.id, showArchived);
         },
@@ -244,7 +251,9 @@ export function renderContactsList(
                   {
                     class: ["text-sm", "text-gray-600"],
                   },
-                  item.lastMessage
+                  commencePar(item.lastMessage, "blob:http://localhost:") || commencePar(item.lastMessage, 'data:audio/webm;base64')
+                    ? "Audio"
+                    : item.lastMessage
                 ),
               ]
             ),
@@ -403,7 +412,7 @@ export function getDiscussionContacts(idUser = 1) {
         name: user.name,
         contact: user.contact,
         conversationId: convo.id,
-        lastMessage: lastMsg ? lastMsg.content : "",
+        lastMessage: lastMsg ? (convo.type ? "Audio" : lastMsg.content) : "",
         date: lastMsg ? lastMsg.timestamp?.slice(11, 16) : "",
       };
     })
@@ -549,3 +558,7 @@ export const listMembers = createElement(
     ),
   ]
 );
+
+function commencePar(text, start) {
+  return text.startsWith(start);
+}

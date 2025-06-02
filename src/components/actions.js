@@ -19,12 +19,11 @@ export const deleteDiscussion = createElement(
       "justify-center",
       "items-center",
       "cursor-pointer",
-      "bi bi-plus-lg",
-      "border-[#272117]",
+      "border-orange-500",
     ],
   },
   createElement("i", {
-    class: ["text-2xl", "font-bold", "fa-solid fa-trash", "text-[#272117]"],
+    class: ["text-2xl", "font-bold", "bi bi-plus-lg", "text-orange-500"],
   })
 );
 export const deleteConversation = createElement(
@@ -39,12 +38,11 @@ export const deleteConversation = createElement(
       "justify-center",
       "items-center",
       "cursor-pointer",
-      "bi bi-trash",
       "border-[#a1040d]",
     ],
   },
   createElement("i", {
-    class: ["text-2xl", "font-bold", "fa-solid fa-trash", "text-red-500"],
+    class: ["text-2xl", "font-bold", "bi bi-trash", "text-red-500"],
   })
 );
 export const blocConversation = createElement(
@@ -79,7 +77,6 @@ export const archive = createElement(
       "items-center",
       "cursor-pointer",
       "hover:bg-gray-200",
-      "bi bi-archive-fill",
       "border-[#837d73]",
     ],
     onclick: () => {
@@ -97,6 +94,12 @@ export const archive = createElement(
     },
   },
   createElement("i", {
-    class: ["text-2xl", "font-bold", "text-gray-500", "text-[#837d73]"],
+    class: [
+      "text-2xl",
+      "font-bold",
+      "bi bi-archive-fill",
+      "text-gray-500",
+      "text-[#837d73]",
+    ],
   })
 );
