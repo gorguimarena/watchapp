@@ -1,5 +1,3 @@
-import { conversations } from "./Const";
-
 const baseUsers = [
   { id: 1, name: "Alice", contact: "7816535561" },
   { id: 2, name: "Alice-2", contact: "7816535562" },
