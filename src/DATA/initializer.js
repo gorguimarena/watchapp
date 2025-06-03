@@ -30,6 +30,7 @@ const sampleMessages = [
   "Merci pour ton aide !",
   "Tu as des nouvelles ?",
   "Je te tiens au courant dès que j'en ai.",
+  "Je te souhaite le meilleure !.",
 ];
 
 function personalizeMessage(template, name) {
